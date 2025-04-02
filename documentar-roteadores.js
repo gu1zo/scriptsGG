@@ -3,7 +3,8 @@
 // @namespace    http://tampermonkey.net/
 // @version      2025-04-02
 // @description  Coleta informações do roteador automaticamente em segundo plano
-// @author       You
+// @author       Vogel
+// @downloadURL  https://raw.githubusercontent.com/gu1zo/scriptsGG/refs/heads/main/documentar-roteadores.js
 // @match        *://*/html/index.html
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=156.194
 // @grant        GM_setClipboard
