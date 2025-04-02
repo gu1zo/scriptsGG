@@ -1,6 +1,5 @@
 // ==UserScript==
 // @name         Documentar ONT HUAWEI
-// @namespace    http://tampermonkey.net/
 // @version      2025-04-02
 // @description  Coleta informações do roteador automaticamente em segundo plano
 // @author       Vogel
