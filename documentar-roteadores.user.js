@@ -80,6 +80,7 @@
     async function getRouterFirmware() {
         await click('#more > div');
         await click('#deviceinfoparent_menuId');
+        await delay(200);
         let name = (await waitForElement('#deviceinfo_view_data_edit_deviceinfo_product_name_label_ctrl'))?.innerText || "Não encontrado";
         let firmware = (await waitForElement('#deviceinfo_view_data_edit_deviceinfo_software_label_ctrl'))?.innerText || "Não encontrado";
         return `Modelo: ${name}\nFirmware: ${firmware}\n`;
