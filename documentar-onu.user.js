@@ -9,28 +9,26 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @grant        GM_setClipboard
 // ==/UserScript==
-    function delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    function getElementByXPath(xpath) {
-        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-        return result ? result.textContent : null;
-    }
-    
-    async function click(selector){
-        await document.querySelector(selector).click();
-        await delay(1000);
-    }
-    function getDNS(){
-        return "DNS WAN: \nDNS LAN: \n";
+(function() {
+    'use strict';
+
+    async function getRouter() {
+        let mensagem = 
+`[Configurações do Roteador]
+Modelo: ONT HUAWEI  
+Firmware:
+DNS WAN:
+DNS LAN:
+Priorizar 5G:
+UPNP:
+IPv6 Habilitado:
+Rede 2.4G - Largura: MHz | Canal:
+Rede 5G - Largura: MHz | Canal:
+Uptime: `;
+
+        GM_setClipboard(mensagem);
+        alert("Relatório copiado para a área de transferência!");
     }
 
-    async function getRouterFirmware(){
-        await click('#name_deviceinfo');
-
-        let name = await getElementByXPath('/html/body/form/div/table/tbody/tr[2]/td[2]');
-        let fw = await getElementByXPath('/html/body/form/div/table/tbody/tr[7]/td[2]');
-
-        return `Modelo: ${name}\nFirmware: ${fw}\n`;
-    }
-getRouterFirmware();
+    getRouter()
+})();
