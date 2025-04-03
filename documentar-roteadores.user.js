@@ -6,7 +6,7 @@
 // @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/documentar-roteadores.user.js
 // @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/documentar-roteadores.user.js
 // @match        *://*/html/index.html
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=156.194
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @grant        GM_setClipboard
 // ==/UserScript==
 

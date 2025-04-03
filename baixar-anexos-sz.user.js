@@ -3,6 +3,7 @@
 // @version      2025-04-03
 // @description  Baixa todas as imagens das conversas no SZ.Chat em um arquivo ZIP
 // @author       Vogel
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/baixar-anexos-sz.user.js
 // @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/baixar-anexos-sz.user.js
 // @match        *://*.ggnet.sz.chat/*
