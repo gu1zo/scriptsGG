@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Baixar Imagens SZ.CHAT
+// @name         Baixar Mídia SZ.CHAT
 // @version      2025-04-03
-// @description  Baixa todas as imagens das conversas no SZ.Chat em um arquivo ZIP
+// @description  Baixa todas as imagens e vídeos das conversas no SZ.Chat em um arquivo ZIP
 // @author       Vogel
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/baixar-anexos-sz.user.js
@@ -24,15 +24,15 @@
         let button = document.createElement("a");
         button.setAttribute("data-v-5cbb963e", "");
         button.className = "item text-ellipsis";
-        button.innerHTML = '<i data-v-5cbb963e class="icon tag"></i> Baixar Imagens';
+        button.innerHTML = '<i data-v-5cbb963e class="icon tag"></i> Baixar Mídia';
         button.style.cursor = "pointer";
-        button.addEventListener("click", processImages);
+        button.addEventListener("click", processMedia);
 
         menu.insertBefore(button, null); // Adiciona o botão no menu
     }
 
-    function processImages() {
-        let imageUrls = [];
+    function processMedia() {
+        let mediaUrls = [];
 
         let listItems = document.querySelectorAll('#list_mensagens > ul > li');
         if (listItems.length === 0) {
@@ -41,44 +41,51 @@
         }
 
         listItems.forEach((li) => {
+            // Buscar imagens
             let imgElement = li.querySelector('span div div div div:nth-child(2) div div span a img');
             if (imgElement) {
-                let imageUrl = imgElement.src;
-                imageUrls.push(imageUrl);
+                mediaUrls.push({ url: imgElement.src, type: 'image' });
+            }
+
+            // Buscar vídeos
+            let videoElement = li.querySelector('span div div div div:nth-child(2) div div span div div div:nth-child(2) video');
+            if (videoElement) {
+                mediaUrls.push({ url: videoElement.src, type: 'video' });
             }
         });
 
-        console.log("Imagens encontradas:", imageUrls);
+        console.log("Mídia encontrada:", mediaUrls);
 
-        if (imageUrls.length > 0) {
-            downloadImagesAndZip(imageUrls);
+        if (mediaUrls.length > 0) {
+            downloadMediaAndZip(mediaUrls);
         } else {
-            alert("Nenhuma imagem para baixar.");
+            alert("Nenhuma mídia para baixar.");
         }
     }
 
-    async function downloadImagesAndZip(imageUrls) {
+    async function downloadMediaAndZip(mediaUrls) {
         let zip = new JSZip();
         let count = 0;
 
-        for (let imageUrl of imageUrls) {
+        for (let media of mediaUrls) {
             try {
-                let response = await fetch(imageUrl);
+                let response = await fetch(media.url);
                 let blob = await response.blob();
-                let filename = `imagem_${count + 1}.jpg`;
+                let extension = media.type === 'image' ? 'jpg' : 'mp4';
+                let filename = `midia_${count + 1}.${extension}`;
 
                 zip.file(filename, blob);
-                console.log(`Baixado ${count + 1}/${imageUrls.length}: ${imageUrl}`);
+                console.log(`Baixado ${count + 1}/${mediaUrls.length}: ${media.url}`);
                 count++;
             } catch (error) {
-                console.error("Erro ao baixar a imagem:", imageUrl, error);
+                console.error("Erro ao baixar a mídia:", media.url, error);
             }
         }
 
         zip.generateAsync({ type: "blob" }).then(content => {
             let a = document.createElement("a");
             a.href = URL.createObjectURL(content);
-            a.download = "imagens.zip";
+            a.download = "midia.zip";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
