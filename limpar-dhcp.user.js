@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         DHCP Cleaner 2.0
+// @name         Limpar Lista DHCP
 // @namespace    http://tampermonkey.net/
 // @version      2025-04-03
 // @description  Limpa lista DHCP dos roteadores HUAWEI
