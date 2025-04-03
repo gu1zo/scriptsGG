@@ -3,8 +3,8 @@
 // @version      2025-04-03
 // @description  Copia as conversas do SZ.Chat
 // @author       Vogel
-// @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/copiar-conversa-sz.user
-// @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/copiar-conversa-sz.user
+// @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/copiar-conversa-sz.user.js
+// @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/copiar-conversa-sz.user.js
 // @match        *://*.ggnet.sz.chat/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @grant        GM_setClipboard
