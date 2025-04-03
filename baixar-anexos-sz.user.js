@@ -7,49 +7,40 @@
 // @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/baixar-anexos-sz.user.js
 // @match        *://*.ggnet.sz.chat/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=156.194
-// @grant        none
+// @grant        GM_download
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    async function downloadImage(url) {
-        const response = await fetch(url);
-        return response.blob();
-    }
-
     async function collectImages() {
-        let images = document.querySelectorAll("#list_mensagens ul li img");
+        let images = document.querySelectorAll("#list_mensagens img");
         if (images.length === 0) {
             alert("Não há imagens para baixar.");
             return;
         }
 
-        const zip = new JSZip();
-        const folder = zip.folder("imagens");
+        let zip = new JSZip();
         let count = 0;
 
         for (let img of images) {
             try {
-                const blob = await downloadImage(img.src);
-                folder.file(`imagem_${count}.jpg`, blob);
+                let response = await fetch(img.src);
+                let blob = await response.blob();
+                zip.file(`imagem_${count + 1}.jpg`, blob);
                 count++;
             } catch (error) {
-                console.error("Erro ao baixar imagem:", img.src, error);
+                console.error("Erro ao baixar a imagem:", img.src, error);
             }
         }
 
         if (count > 0) {
-            zip.generateAsync({ type: "blob" }).then((content) => {
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(content);
-                a.download = "imagens.zip";
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
+            let zipBlob = await zip.generateAsync({ type: "blob" });
+            saveAs(zipBlob, "imagens_sz_chat.zip");
         } else {
-            alert("Não foi possível baixar nenhuma imagem.");
+            alert("Erro ao gerar o ZIP das imagens.");
         }
     }
 
