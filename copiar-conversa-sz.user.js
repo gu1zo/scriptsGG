@@ -12,6 +12,7 @@
 
 (function() {
     'use strict';
+
     function getXPathValue(xpath) {
         let result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
         if (!result.singleNodeValue) return null;
@@ -52,11 +53,28 @@
             resultString += `${value1}\n${value2}\n\n`;
         }
         
-        console.log(resultString.trim());
+        GM_setClipboard(resultString.trim());
+        alert("Conversas copiadas para a área de transferência!");
     }
-    
-    let mensagem = processListItems();
-    
 
-        GM_setClipboard(mensagem);
+    function createCopyButton() {
+        let button = document.createElement("button");
+        button.innerText = "Copiar Conversas";
+        button.style.position = "fixed";
+        button.style.bottom = "20px";
+        button.style.right = "20px";
+        button.style.zIndex = "1000";
+        button.style.padding = "10px 15px";
+        button.style.background = "#007bff";
+        button.style.color = "#fff";
+        button.style.border = "none";
+        button.style.borderRadius = "5px";
+        button.style.cursor = "pointer";
+        
+        button.onclick = processListItems;
+        
+        document.body.appendChild(button);
+    }
+
+    createCopyButton();
 })();
