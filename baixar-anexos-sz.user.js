@@ -6,43 +6,12 @@
 // @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/baixar-anexos-sz.user.js
 // @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/baixar-anexos-sz.user.js
 // @match        *://*.ggnet.sz.chat/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=156.194
-// @grant        GM_download
+// @grant        none
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
-// @require      https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js
 // ==/UserScript==
 
 (function() {
     'use strict';
-
-    async function collectImages() {
-        let images = document.querySelectorAll("#list_mensagens img");
-        if (images.length === 0) {
-            alert("Não há imagens para baixar.");
-            return;
-        }
-
-        let zip = new JSZip();
-        let count = 0;
-
-        for (let img of images) {
-            try {
-                let response = await fetch(img.src);
-                let blob = await response.blob();
-                zip.file(`imagem_${count + 1}.jpg`, blob);
-                count++;
-            } catch (error) {
-                console.error("Erro ao baixar a imagem:", img.src, error);
-            }
-        }
-
-        if (count > 0) {
-            let zipBlob = await zip.generateAsync({ type: "blob" });
-            saveAs(zipBlob, "imagens_sz_chat.zip");
-        } else {
-            alert("Erro ao gerar o ZIP das imagens.");
-        }
-    }
 
     function addDownloadButton() {
         let container = document.querySelector(".tags-sessions");
@@ -54,12 +23,67 @@
         let button = document.createElement("a");
         button.setAttribute("data-v-5cbb963e", "");
         button.className = "item text-ellipsis";
-        button.innerHTML = '<i class="bi bi-download"></i> Baixar Imagens';
+        button.innerHTML = '<i data-v-5cbb963e class="icon tag"></i> Baixar Imagens';
         button.style.cursor = "pointer";
-        button.addEventListener("click", collectImages);
+        button.addEventListener("click", processImages);
 
-        menu.appendChild(button);
+        menu.insertBefore(button, null); // Adiciona o botão no menu
     }
 
-    addDownloadButton();
+    function processImages() {
+        let imageUrls = [];
+
+        let listItems = document.querySelectorAll('#list_mensagens > ul > li');
+        if (listItems.length === 0) {
+            alert("Nenhuma mensagem encontrada.");
+            return;
+        }
+
+        listItems.forEach((li) => {
+            let imgElement = li.querySelector('span div div div div:nth-child(2) div div span a img');
+            if (imgElement) {
+                let imageUrl = imgElement.src;
+                imageUrls.push(imageUrl);
+            }
+        });
+
+        console.log("Imagens encontradas:", imageUrls);
+
+        if (imageUrls.length > 0) {
+            downloadImagesAndZip(imageUrls);
+        } else {
+            alert("Nenhuma imagem para baixar.");
+        }
+    }
+
+    async function downloadImagesAndZip(imageUrls) {
+        let zip = new JSZip();
+        let count = 0;
+
+        for (let imageUrl of imageUrls) {
+            try {
+                let response = await fetch(imageUrl);
+                let blob = await response.blob();
+                let filename = `imagem_${count + 1}.jpg`;
+
+                zip.file(filename, blob);
+                console.log(`Baixado ${count + 1}/${imageUrls.length}: ${imageUrl}`);
+                count++;
+            } catch (error) {
+                console.error("Erro ao baixar a imagem:", imageUrl, error);
+            }
+        }
+
+        zip.generateAsync({ type: "blob" }).then(content => {
+            let a = document.createElement("a");
+            a.href = URL.createObjectURL(content);
+            a.download = "imagens.zip";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    }
+
+    // Aguarda o carregamento da página e adiciona o botão
+    setTimeout(addDownloadButton, 3000);
 })();
