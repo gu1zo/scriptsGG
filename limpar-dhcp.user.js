@@ -8,7 +8,6 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/limpar-dhcp.user.js
 // @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/limpar-dhcp.user.js
-// @license      MIT
 // @grant        GM_setClipboard
 // ==/UserScript==
 
