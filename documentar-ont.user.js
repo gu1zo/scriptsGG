@@ -3,8 +3,8 @@
 // @version      2025-04-02
 // @description  Coleta informações do roteador automaticamente em segundo plano
 // @author       Vogel
-// @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/documentar-onu.user.js
-// @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/documentar-onu.user.js
+// @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/documentar-ont.user.js
+// @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/documentar-ont.user.js
 // @match        *://*/index.asp
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @grant        GM_setClipboard
