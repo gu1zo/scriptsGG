@@ -6,6 +6,7 @@
 // @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/documentar-onu.user.js
 // @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/documentar-onu.user.js
 // @match        https://autoisp.gegnet.com.br/contracted_services/*
+// @match        https://autoisp.gegnet.com.br/gpon_clients/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @grant        GM_setClipboard
 // ==/UserScript==
@@ -29,7 +30,7 @@
     }
 
     async function getNome() {
-        const el = await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[1]/div/div/table[2]/tbody/tr[7]/td/div/div/span/div/div');
+        const el = await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[1]/div/div/table[2]/tbody/tr[6]/td/div/div/span/div/div');
         return `Cliente sobe em OLT: ${el?.innerText.trim() || "Não encontrado"}\n`;
     }
 
@@ -41,14 +42,21 @@
     }
 
     async function getModelo() {
-        const modelo = (await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[1]/div/div/table[1]/tr/td[1]/div/span'))?.innerText.trim() || "Não encontrado";
+        const modelo = (await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[2]/div/div/div/div/div/table[1]/tbody/tr[7]/td/div/text()'))?.textContent.trim() || "Não encontrado";
         const fw = (await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[2]/div/div/div/div/div/table[1]/tbody/tr[8]/td/div'))?.innerText.trim() || "Não encontrado";
         return `Modelo da ONU: ${modelo} Firmware: ${fw}\n`;
     }
 
     async function getSinal() {
-        const el = await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[2]/div/div/div/div/div/table[1]/tbody/tr[4]/td/div');
-        return `SA: ${el?.innerText.trim() || "Não encontrado"}\n`;
+        let el = await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[2]/div/div/div/div/div/table[1]/tbody/tr[4]/td/div');
+        const sa = el?.innerText.trim();
+        el = await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[2]/div/div/div/div/div/table[1]/tbody/tr[5]/td/div/text()');
+        const sr = el?.textContent.trim();
+        return `SA: ${sa || "Não encontrado"}\nSR: ${sr || "Não encontrado"}\n`;
+    }
+    async function getNegociacao() {
+        const el = await waitForElement('/html/body/div[5]/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[2]/div[2]/div/div/div/div/div/p/table/tr/td[3]');
+        return `Negociação em: ${el?.innerText.trim() || "Não encontrado"} Mbps\n`;
     }
 
     async function getUptime() {
@@ -62,7 +70,7 @@
         mensagem += await getOLT();
         mensagem += await getModelo();
         mensagem += await getSinal();
-        mensagem += "Negociação em: X Mbps\n";
+        mensagem += await getNegociacao();
         mensagem += await getUptime();
 
         try {
