@@ -6,11 +6,10 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gegnet.com.br
 // @downloadURL  https://github.com/gu1zo/scriptsGG/blob/main/baixar-anexos-sz.user.js
 // @updateURL    https://github.com/gu1zo/scriptsGG/blob/main/baixar-anexos-sz.user.js
-// @match        *://*.ggnet.sz.chat/*
+// @match        *://*.clusterscpr.sz.chat/*
 // @grant        none
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js
 // ==/UserScript==
-
 (function() {
     'use strict';
 
